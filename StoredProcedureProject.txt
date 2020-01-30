@@ -1,0 +1,65 @@
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_manufacturer`(int_seg_id varchar(10))
+BEGIN
+
+SELECT DISTINCT m.id, m.manu_name FROM Models mo INNER JOIN Manufacturer m 
+ON mo.manufacturer_id = m.id AND mo.segment_id = int_seg_id; 
+
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_models`(int_seg_id varchar(5), int_man_id varchar(5))
+BEGIN
+
+ SELECT * FROM Models m where m.segment_id = int_seg_id AND m.manufacturer_id = int_man_id;
+
+END$$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAlternateTableItem`(int_model_id varchar(5))
+BEGIN
+
+SELECT i.id,i.name FROM alt_tbl a INNER JOIN items i ON a.alt_id=i.id WHERE a.item_id=int_model_id; 
+
+END$$
+
+DELIMITER ;
+
+
+
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getDefaultItemDetails`(int_model_id varchar(5))
+BEGIN
+
+SELECT i.id, i.name FROM model_detail m 
+INNER JOIN items i 
+ON m.item_id = i.id 
+WHERE m.model_id = int_model_id AND m.model_config='N'; 
+
+END$$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getItemDetails`(int_model_id varchar(5), string_model_type varchar(10))
+BEGIN
+
+SELECT i.id, i.name FROM model_detail m 
+INNER JOIN items i 
+ON m.item_id = i.id 
+WHERE m.model_id = int_model_id AND m.model_config='Y' AND m.model_type = string_model_type; 
+
+END$$
+
+DELIMITER ;
